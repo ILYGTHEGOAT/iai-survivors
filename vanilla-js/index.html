@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="IA Survivors: Semestre 1 — RPG narratif cyberpunk africain à l'IAI Togo">
+  <title>IA Survivors: Semestre 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game-container">
+    <!-- SCANLINE OVERLAY -->
+    <div class="scanlines"></div>
+    <div class="crt-corner tl"></div>
+    <div class="crt-corner tr"></div>
+    <div class="crt-corner bl"></div>
+    <div class="crt-corner br"></div>
+
+    <!-- ====== SCREEN: TITLE ====== -->
+    <div id="screen-title" class="screen active">
+      <div class="title-bg-grid"></div>
+      <div class="title-glitch-wrapper">
+        <h1 class="title-main glitch" data-text="IA SURVIVORS">IA SURVIVORS</h1>
+        <p class="title-sub">SEMESTRE 1 — IAI TOGO</p>
+        <p class="title-motto">"Le code est la magie moderne, mais toute magie a un prix."</p>
+      </div>
+      <div class="title-deco">
+        <div class="hexgrid"></div>
+      </div>
+      <div class="title-menu">
+        <button class="btn-pixel" id="btn-new-game">[ NOUVELLE PARTIE ]</button>
+        <button class="btn-pixel secondary" id="btn-continue">[ CONTINUER ]</button>
+        <button class="btn-pixel secondary" id="btn-about">[ À PROPOS ]</button>
+      </div>
+      <div class="title-footer">
+        <span class="blink">▶ APPUYEZ POUR COMMENCER ◀</span>
+        <span class="version">v0.1.0-alpha</span>
+      </div>
+    </div>
+
+    <!-- ====== SCREEN: CHARACTER SELECT ====== -->
+    <div id="screen-charselect" class="screen">
+      <div class="screen-header">
+        <h2 class="screen-title">CHOISISSEZ VOTRE HÉROS</h2>
+        <p class="screen-sub">Qui survivra au Semestre 1 de l'IAI ?</p>
+      </div>
+      <div class="char-select-grid">
+        <!-- Cards injected by JS -->
+      </div>
+      <div class="char-detail-panel" id="char-detail">
+        <div class="char-portrait-big" id="char-portrait"></div>
+        <div class="char-info">
+          <h3 id="char-name-big"></h3>
+          <p id="char-bio"></p>
+          <div class="char-stats" id="char-stats"></div>
+          <p class="char-skill-label">COMPÉTENCE SPÉCIALE</p>
+          <div class="char-skill-box" id="char-skill"></div>
+        </div>
+      </div>
+      <div class="char-select-actions">
+        <button class="btn-pixel secondary" id="btn-back-title">[ RETOUR ]</button>
+        <button class="btn-pixel" id="btn-confirm-char" disabled>[ CONFIRMER ]</button>
+      </div>
+    </div>
+
+    <!-- ====== SCREEN: INTRO CINEMATIC ====== -->
+    <div id="screen-intro" class="screen">
+      <div class="cinematic-box">
+        <div class="cinematic-text" id="cinematic-text"></div>
+        <button class="btn-pixel" id="btn-next-cin">[ SUIVANT ▶ ]</button>
+      </div>
+    </div>
+
+    <!-- ====== SCREEN: CAMPUS MAP ====== -->
+    <div id="screen-map" class="screen">
+      <div class="map-header">
+        <div class="map-info">
+          <span class="week-label">SEMAINE <span id="week-num">1</span></span>
+          <span class="day-label">/ 17</span>
+        </div>
+        <div class="hud-bars">
+          <div class="hud-bar-group">
+            <span class="hud-icon">⚡</span>
+            <div class="hud-bar"><div class="hud-fill energy-fill" id="bar-energy"></div></div>
+            <span class="hud-val" id="val-energy">100</span>
+          </div>
+          <div class="hud-bar-group">
+            <span class="hud-icon">🧠</span>
+            <div class="hud-bar"><div class="hud-fill intel-fill" id="bar-intel"></div></div>
+            <span class="hud-val" id="val-intel">0</span>
+          </div>
+          <div class="hud-bar-group">
+            <span class="hud-icon">😰</span>
+            <div class="hud-bar"><div class="hud-fill stress-fill" id="bar-stress"></div></div>
+            <span class="hud-val" id="val-stress">0</span>
+          </div>
+          <div class="hud-bar-group">
+            <span class="hud-icon">🤝</span>
+            <div class="hud-bar"><div class="hud-fill social-fill" id="bar-social"></div></div>
+            <span class="hud-val" id="val-social">50</span>
+          </div>
+        </div>
+        <div class="hero-mini" id="hero-mini-hud"></div>
+      </div>
+
+      <div class="map-canvas-wrapper">
+        <canvas id="map-canvas" width="800" height="400"></canvas>
+        <div class="map-locations" id="map-locations"></div>
+      </div>
+
+      <div class="map-actions">
+        <div class="day-actions" id="day-actions">
+          <!-- Actions injected per day -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== SCREEN: DIALOGUE ====== -->
+    <div id="screen-dialogue" class="screen">
+      <div class="dialogue-scene" id="dialogue-scene">
+        <div class="dialogue-bg" id="dialogue-bg"></div>
+        <div class="dialogue-char-left" id="dlg-char-left"></div>
+        <div class="dialogue-char-right" id="dlg-char-right"></div>
+      </div>
+      <div class="dialogue-box">
+        <div class="dialogue-speaker" id="dlg-speaker"></div>
+        <div class="dialogue-text" id="dlg-text"></div>
+        <div class="dialogue-choices" id="dlg-choices"></div>
+        <button class="btn-pixel small" id="btn-dlg-next">[ CONTINUER ▶ ]</button>
+      </div>
+    </div>
+
+    <!-- ====== SCREEN: COMBAT ====== -->
+    <div id="screen-combat" class="screen">
+      <div class="combat-layout">
+        <!-- Enemy side -->
+        <div class="combat-enemy-side">
+          <div class="enemy-name-bar">
+            <span id="enemy-name">???</span>
+            <div class="enemy-hp-bar"><div class="enemy-hp-fill" id="enemy-hp-fill"></div></div>
+            <span id="enemy-hp-val">100/100</span>
+          </div>
+          <div class="enemy-sprite-area" id="enemy-sprite-area">
+            <div class="enemy-sprite" id="enemy-sprite"></div>
+          </div>
+          <div class="enemy-status-effects" id="enemy-status"></div>
+        </div>
+
+        <!-- Center divider -->
+        <div class="combat-divider">
+          <div class="vs-badge">VS</div>
+        </div>
+
+        <!-- Hero side -->
+        <div class="combat-hero-side">
+          <div class="hero-combat-info">
+            <div class="hero-sprite-combat" id="hero-sprite-combat"></div>
+            <div class="hero-combat-stats">
+              <div class="hero-name-combat" id="hero-name-combat">not_a_genius</div>
+              <div class="combat-bar-group">
+                <span>HP</span>
+                <div class="hud-bar"><div class="hud-fill hero-hp-fill" id="hero-hp-fill"></div></div>
+                <span id="hero-hp-val">80/80</span>
+              </div>
+              <div class="combat-bar-group">
+                <span>MP</span>
+                <div class="hud-bar"><div class="hud-fill hero-mp-fill" id="hero-mp-fill"></div></div>
+                <span id="hero-mp-val">50/50</span>
+              </div>
+            </div>
+          </div>
+          <div class="ally-row" id="ally-row">
+            <!-- Allies injected -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Combat log -->
+      <div class="combat-log" id="combat-log">
+        <div class="log-entry">Le combat commence…</div>
+      </div>
+
+      <!-- Combat actions -->
+      <div class="combat-actions" id="combat-actions">
+        <button class="btn-combat" id="btn-attack">⚔️ ATTAQUER</button>
+        <button class="btn-combat" id="btn-special">✨ SPÉCIAL</button>
+        <button class="btn-combat" id="btn-item">🎒 ITEM</button>
+        <button class="btn-combat" id="btn-defend">🛡️ DÉFENDRE</button>
+      </div>
+
+      <!-- Mini-game overlay for special moves -->
+      <div class="minigame-overlay" id="minigame-overlay" style="display:none">
+        <div class="minigame-box" id="minigame-box"></div>
+      </div>
+    </div>
+
+    <!-- ====== SCREEN: GAME OVER ====== -->
+    <div id="screen-gameover" class="screen">
+      <div class="gameover-content">
+        <h2 class="glitch gameover-title" data-text="GAME OVER">GAME OVER</h2>
+        <p id="gameover-msg">Tu as été éliminé.</p>
+        <p class="gameover-sub">Les Obsolètes te réclament.</p>
+        <button class="btn-pixel" id="btn-retry">[ RÉESSAYER ]</button>
+        <button class="btn-pixel secondary" id="btn-menu-go">[ MENU ]</button>
+      </div>
+    </div>
+
+    <!-- ====== SCREEN: WIN ====== -->
+    <div id="screen-win" class="screen">
+      <div class="win-content">
+        <h2 class="win-title">🏆 SEMESTRE TERMINÉ</h2>
+        <p id="win-msg">Tu as survécu au Semestre 1 !</p>
+        <div class="win-stats" id="win-stats"></div>
+        <button class="btn-pixel" id="btn-end">[ FIN DE DÉMO ]</button>
+      </div>
+    </div>
+
+    <!-- ====== NOTIFICATION TOAST ====== -->
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

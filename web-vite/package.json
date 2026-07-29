@@ -1,0 +1,19 @@
+{
+  "name": "iai-survivors",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "IAI Survivors - A survival/management game with combat and dialogue",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src/"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
